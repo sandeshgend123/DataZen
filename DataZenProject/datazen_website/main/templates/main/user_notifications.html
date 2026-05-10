@@ -1,0 +1,205 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Notifications - DataZen Analytics{% endblock %}
+
+{% block content %}
+<section class="notifications-section" style="min-height: 80vh; padding: 3rem 0;">
+    <div class="container">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <h1 style="color: #0051ba; margin-bottom: 0.5rem;">🔔 Your Notifications</h1>
+            <p style="color: #666; margin-bottom: 2rem;">Messages and replies from our team</p>
+
+            {% if messages %}
+                <div class="alert alert-success" style="
+                    background: #ecfdf5;
+                    border-left: 4px solid #059669;
+                    padding: 1rem;
+                    margin-bottom: 2rem;
+                    border-radius: 4px;
+                ">
+                    {% for message in messages %}
+                        <p style="margin: 0; color: #059669;"><strong>✓</strong> {{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if contacts_with_replies %}
+                <div style="
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                    overflow: hidden;
+                ">
+                    <!-- Header -->
+                    <div style="
+                        background: linear-gradient(135deg, #0051ba 0%, #00a8cc 100%);
+                        color: white;
+                        padding: 1.5rem;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    ">
+                        <h2 style="margin: 0; font-size: 1.3rem;">📧 Replies from Our Team</h2>
+                        <span style="
+                            background: rgba(255,255,255,0.3);
+                            padding: 0.4rem 0.8rem;
+                            border-radius: 20px;
+                            font-size: 0.9rem;
+                        ">{{ contacts_with_replies|length }} message(s)</span>
+                    </div>
+
+                    <!-- Notifications List -->
+                    <div>
+                        {% for contact in contacts_with_replies %}
+                            <div style="
+                                border-bottom: 1px solid #e5e7eb;
+                                padding: 1.5rem;
+                                transition: all 0.3s ease;
+                            " onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='white'">
+                                <!-- Original Message Header -->
+                                <div style="margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                                        <h3 style="color: #0051ba; margin: 0; font-size: 1.1rem;">Your Message Received</h3>
+                                        <span style="
+                                            background: #dbeafe;
+                                            color: #0051ba;
+                                            padding: 0.3rem 0.8rem;
+                                            border-radius: 20px;
+                                            font-size: 0.8rem;
+                                            font-weight: 600;
+                                        ">✓ Replied</span>
+                                    </div>
+                                    <p style="margin: 0.3rem 0; color: #999; font-size: 0.9rem;">
+                                        📅 Sent: {{ contact.created_at|date:"F d, Y at g:i A" }}
+                                    </p>
+                                </div>
+
+                                <!-- Your Original Message -->
+                                <div style="
+                                    background: #f5f5f5;
+                                    border-left: 4px solid #00a8cc;
+                                    padding: 1rem;
+                                    border-radius: 4px;
+                                    margin-bottom: 1.5rem;
+                                ">
+                                    <p style="margin: 0; color: #666; font-size: 0.95rem; line-height: 1.6;">
+                                        {{ contact.message }}
+                                    </p>
+                                </div>
+
+                                <!-- Admin Reply -->
+                                <div style="
+                                    background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+                                    border-left: 4px solid #059669;
+                                    padding: 1rem;
+                                    border-radius: 4px;
+                                    margin-bottom: 1rem;
+                                ">
+                                    <p style="
+                                        margin: 0 0 0.5rem 0;
+                                        color: #059669;
+                                        font-weight: 600;
+                                        font-size: 0.9rem;
+                                    ">
+                                        💬 Reply from DataZen Analytics
+                                    </p>
+                                    <p style="
+                                        margin: 0;
+                                        color: #333;
+                                        font-size: 0.95rem;
+                                        line-height: 1.6;
+                                    ">
+                                        {{ contact.reply }}
+                                    </p>
+                                </div>
+
+                                <!-- Reply Details -->
+                                <div style="
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    font-size: 0.85rem;
+                                    color: #999;
+                                ">
+                                    <p style="margin: 0;">
+                                        ✅ Replied on {{ contact.reply_sent_at|date:"F d, Y at g:i A" }}
+                                    </p>
+                                    <a href="mailto:{{ contact.email }}" style="
+                                        color: #0051ba;
+                                        text-decoration: none;
+                                        font-weight: 600;
+                                    ">📧 Reply via Email</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Back Button -->
+                <div style="margin-top: 2rem; text-align: center;">
+                    <a href="{% url 'home' %}" style="
+                        display: inline-block;
+                        background: #0051ba;
+                        color: white;
+                        padding: 0.8rem 2rem;
+                        border-radius: 6px;
+                        text-decoration: none;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.background='#003d7a'" onmouseout="this.style.background='#0051ba'">
+                        ← Back to Home
+                    </a>
+                </div>
+            {% else %}
+                <!-- Empty State -->
+                <div style="
+                    background: white;
+                    border-radius: 8px;
+                    padding: 3rem;
+                    text-align: center;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                ">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
+                    <h2 style="color: #0051ba; margin: 0 0 0.5rem 0;">No Notifications Yet</h2>
+                    <p style="color: #666; margin: 0 0 1.5rem 0;">
+                        You don't have any replies from our team yet. When we respond to your contact message,<br>
+                        you'll see the notification here.
+                    </p>
+
+                    <!-- Tips Section -->
+                    <div style="
+                        background: #f0f7ff;
+                        border-left: 4px solid #0051ba;
+                        padding: 1rem;
+                        border-radius: 4px;
+                        margin: 1.5rem 0;
+                        text-align: left;
+                    ">
+                        <p style="margin: 0; color: #0051ba; font-weight: 600; margin-bottom: 0.5rem;">💡 How it works:</p>
+                        <ul style="margin: 0; color: #666; padding-left: 1.5rem;">
+                            <li>Submit a message through our <a href="{% url 'contact' %}" style="color: #0051ba; text-decoration: none; font-weight: 600;">contact form</a></li>
+                            <li>Our team will review your message</li>
+                            <li>We'll send you a reply</li>
+                            <li>You'll get notified and can see it here</li>
+                        </ul>
+                    </div>
+
+                    <a href="{% url 'contact' %}" style="
+                        display: inline-block;
+                        background: #0051ba;
+                        color: white;
+                        padding: 0.8rem 2rem;
+                        border-radius: 6px;
+                        text-decoration: none;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                        margin-top: 1rem;
+                    " onmouseover="this.style.background='#003d7a'" onmouseout="this.style.background='#0051ba'">
+                        Send a Message
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Services - DataZen Analytics{% endblock %}
+
+{% block content %}
+<section class="services-section">
+    <div class="container">
+        <h1>Our Professional Services</h1>
+        <p class="intro-text">Comprehensive data analytics and business intelligence solutions designed to drive growth and maximize ROI.</p>
+
+        {% if services %}
+            <div class="services-list">
+                {% for service in services %}
+                    <div class="service-item">
+                        <div class="service-header">
+                            <span class="service-icon-large">{{ service.icon }}</span>
+                            <div>
+                                <h2>{{ service.title }}</h2>
+                                <p style="color: #00bcd4; font-weight: 600; margin: 0.5rem 0 0 0;">Expert-led Analytics Solution</p>
+                            </div>
+                        </div>
+                        <p>{{ service.description }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-content">Services coming soon. Contact us for custom solutions.</p>
+        {% endif %}
+
+        <div class="service-packages">
+            <h2>Flexible Pricing Plans</h2>
+            <p class="intro-text">Choose the perfect plan for your business needs. All plans include dedicated support.</p>
+            <div class="packages-grid">
+                <div class="package-card">
+                    <h3>Starter</h3>
+                    <p class="price">$999<span>/month</span></p>
+                    <ul>
+                        <li>Monthly Reports & Analytics</li>
+                        <li>Basic Dashboard</li>
+                        <li>Email Support</li>
+                        <li>Up to 5 Data Sources</li>
+                    </ul>
+                    <a href="{% if user.is_authenticated %}{% url 'sales_department_plan' 'starter' %}{% else %}{% url 'user_login' %}?next={% url 'sales_department_plan' 'starter' %}{% endif %}" class="btn btn-secondary" data-no-ajax>Get Started</a>
+                </div>
+                <div class="package-card featured">
+                    <div class="badge">MOST POPULAR</div>
+                    <h3>Professional</h3>
+                    <p class="price">$2,999<span>/month</span></p>
+                    <ul>
+                        <li>Weekly Reports & Insights</li>
+                        <li>Custom Dashboards</li>
+                        <li>Priority Email & Phone Support</li>
+                        <li>Up to 20 Data Sources</li>
+                        <li>Advanced Analytics</li>
+                    </ul>
+                    <a href="{% if user.is_authenticated %}{% url 'sales_department_plan' 'professional' %}{% else %}{% url 'user_login' %}?next={% url 'sales_department_plan' 'professional' %}{% endif %}" class="btn btn-primary" data-no-ajax>Start Free Trial</a>
+                </div>
+                <div class="package-card">
+                    <h3>Enterprise</h3>
+                    <p class="price">Custom<span>/month</span></p>
+                    <ul>
+                        <li>Real-time Analytics & Alerts</li>
+                        <li>Unlimited Custom Dashboards</li>
+                        <li>24/7 Dedicated Account Manager</li>
+                        <li>Unlimited Data Sources</li>
+                        <li>Custom Integrations & API</li>
+                    </ul>
+                    <a href="{% if user.is_authenticated %}{% url 'sales_department_plan' 'enterprise' %}{% else %}{% url 'user_login' %}?next={% url 'sales_department_plan' 'enterprise' %}{% endif %}" class="btn btn-secondary" data-no-ajax>Contact Sales</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-box">
+            <h3>Not Sure Which Plan?</h3>
+            <p>Our experts will help you find the perfect solution for your analytics needs.</p>
+            <a href="{% url 'contact' %}" class="btn btn-primary" style="background: white !important; color: #1a73e8 !important;">Schedule a Free Consultation</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

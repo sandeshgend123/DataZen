@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ post.title }} - DataZen Analytics{% endblock %}
+
+{% block content %}
+<section class="blog-detail-section">
+    <div class="container">
+        <article class="blog-post">
+            <h1>{{ post.title }}</h1>
+            <div class="blog-meta-detail">
+                <p>
+                    By <strong>{{ post.author }}</strong> | 
+                    <span class="date">{{ post.created_at|date:"F j, Y" }}</span>
+                    {% if post.updated_at != post.created_at %}
+                        | Updated: {{ post.updated_at|date:"F j, Y" }}
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="blog-content">
+                {{ post.content|linebreaks }}
+            </div>
+
+            <div class="blog-navigation">
+                <a href="{% url 'blog' %}" class="btn btn-secondary">← Back to Blog</a>
+            </div>
+        </article>
+    </div>
+</section>
+{% endblock %}

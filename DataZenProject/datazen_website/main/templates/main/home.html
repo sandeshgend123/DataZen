@@ -1,0 +1,74 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Home - DataZen Analytics{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Transform Data into Smart Decisions</h1>
+        <p>At DataZen Analytics, we help businesses unlock the power of their data through cutting-edge analytics and intelligent insights.</p>
+        <a href="{% url 'contact' %}" class="btn btn-primary">Get Started Today</a>
+    </div>
+</section>
+
+<section class="featured-projects">
+    <div class="container">
+        <h2>Our Success Stories</h2>
+        <p class="intro-text">Discover how we've helped businesses like yours achieve remarkable growth through data-driven strategies.</p>
+        
+        {% if projects %}
+            <div class="projects-grid">
+                {% for project in projects %}
+                    <div class="project-card">
+                        {% if project.image %}
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                        {% else %}
+                            <div class="project-placeholder">📊 Project Image</div>
+                        {% endif %}
+                        <h3>{{ project.title }}</h3>
+                        <p>{{ project.description|truncatewords:20 }}</p>
+                        <p class="tools"><strong>Tech Stack:</strong> {{ project.tools_used }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="text-center">
+                <a href="{% url 'portfolio' %}" class="btn btn-secondary">Explore All Projects</a>
+            </div>
+        {% else %}
+            <div class="no-content">
+                <p>No projects available yet. We're crafting amazing solutions!</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="services-preview">
+    <div class="container">
+        <h2>Our Expert Services</h2>
+        <p class="intro-text">Comprehensive analytics solutions tailored to your business needs.</p>
+        
+        {% if services %}
+            <div class="services-grid">
+                {% for service in services %}
+                    <div class="service-card">
+                        <div class="service-icon">{{ service.icon }}</div>
+                        <h3>{{ service.title }}</h3>
+                        <p>{{ service.description }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="text-center">
+                <a href="{% url 'services' %}" class="btn btn-secondary">View All Services & Pricing</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="cta-box" style="background: linear-gradient(135deg, #1a73e8 0%, #00bcd4 100%); padding: 4rem 2rem;">
+    <div class="container">
+        <h3>Ready to Empower Your Business with Data?</h3>
+        <p>Join hundreds of businesses that have transformed their operations with our analytics solutions.</p>
+        <a href="{% url 'contact' %}" class="btn btn-primary" style="background: white !important; color: #1a73e8 !important;">Start Your Free Consultation</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,346 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Select Your Plan - DataZen Analytics{% endblock %}
+
+{% block content %}
+<section class="plan-selection-section">
+    <div class="container">
+        <div class="plan-header">
+            <h1>Welcome, {{ user.username }}!</h1>
+            <p>You're logged in and ready to select your perfect plan</p>
+        </div>
+
+        {% if plan %}
+            <div class="selected-plan-info">
+                <h2>You've Selected: <strong>
+                    {% if plan == 'starter' %}Starter - $999/month
+                    {% elif plan == 'professional' %}Professional - $2,999/month
+                    {% elif plan == 'enterprise' %}Enterprise - Custom/month
+                    {% else %}{{ plan }}{% endif %}
+                </strong></h2>
+                <p>Please review the details below and confirm your selection.</p>
+            </div>
+        {% else %}
+            <div class="intro-text">
+                <p>Select a plan below to get started with DataZen Analytics</p>
+            </div>
+        {% endif %}
+
+        <div class="packages-grid">
+            <!-- Starter Plan -->
+            <div class="package-card">
+                <h3>Starter</h3>
+                <p class="price">$999<span>/month</span></p>
+                <ul class="features-list">
+                    <li><i class="fas fa-check"></i> Monthly Reports & Analytics</li>
+                    <li><i class="fas fa-check"></i> Basic Dashboard</li>
+                    <li><i class="fas fa-check"></i> Email Support</li>
+                    <li><i class="fas fa-check"></i> Up to 5 Data Sources</li>
+                </ul>
+                <button onclick="selectPlan('starter')" class="btn btn-secondary btn-block">
+                    {% if plan == 'starter' %}<i class="fas fa-check"></i> Selected{% else %}Select Plan{% endif %}
+                </button>
+            </div>
+
+            <!-- Professional Plan -->
+            <div class="package-card featured">
+                <div class="badge">MOST POPULAR</div>
+                <h3>Professional</h3>
+                <p class="price">$2,999<span>/month</span></p>
+                <ul class="features-list">
+                    <li><i class="fas fa-check"></i> Weekly Reports & Insights</li>
+                    <li><i class="fas fa-check"></i> Custom Dashboards</li>
+                    <li><i class="fas fa-check"></i> Priority Email & Phone Support</li>
+                    <li><i class="fas fa-check"></i> Up to 20 Data Sources</li>
+                    <li><i class="fas fa-check"></i> Advanced Analytics</li>
+                </ul>
+                <button onclick="selectPlan('professional')" class="btn btn-primary btn-block">
+                    {% if plan == 'professional' %}<i class="fas fa-check"></i> Selected{% else %}Select Plan{% endif %}
+                </button>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="package-card">
+                <h3>Enterprise</h3>
+                <p class="price">Custom<span>/month</span></p>
+                <ul class="features-list">
+                    <li><i class="fas fa-check"></i> Real-time Analytics & Alerts</li>
+                    <li><i class="fas fa-check"></i> Unlimited Custom Dashboards</li>
+                    <li><i class="fas fa-check"></i> 24/7 Dedicated Account Manager</li>
+                    <li><i class="fas fa-check"></i> Unlimited Data Sources</li>
+                    <li><i class="fas fa-check"></i> Custom Integrations & API</li>
+                </ul>
+                <button onclick="selectPlan('enterprise')" class="btn btn-secondary btn-block">
+                    {% if plan == 'enterprise' %}<i class="fas fa-check"></i> Selected{% else %}Select Plan{% endif %}
+                </button>
+            </div>
+        </div>
+
+        {% if plan %}
+            <div class="plan-actions">
+                <a href="{% url 'contact' %}" class="btn btn-primary btn-lg">Proceed to Checkout</a>
+                <a href="{% url 'services' %}" class="btn btn-outline">Change Plan</a>
+            </div>
+        {% endif %}
+
+        <div class="user-info-box">
+            <h3>Account Information</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Username:</label>
+                    <p>{{ user.username }}</p>
+                </div>
+                <div class="info-item">
+                    <label>Email:</label>
+                    <p>{{ user.email }}</p>
+                </div>
+                <div class="info-item">
+                    <label>Account Status:</label>
+                    <p><span class="badge-active">Active</span></p>
+                </div>
+            </div>
+            <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
+        </div>
+    </div>
+</section>
+
+<script>
+function selectPlan(planName) {
+    window.location.href = `{% url 'select_plan' %}?plan=${planName}`;
+}
+</script>
+
+<style>
+.plan-selection-section {
+    padding: 4rem 0;
+    min-height: 100vh;
+}
+
+.plan-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.plan-header h1 {
+    font-size: 2.5rem;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+.plan-header p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+}
+
+.selected-plan-info {
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(0, 188, 212, 0.1) 100%);
+    border: 2px solid var(--secondary);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.selected-plan-info h2 {
+    font-size: 1.8rem;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+.selected-plan-info .price {
+    font-size: 1.5rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin: 0.5rem 0 1rem 0;
+}
+
+.packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.package-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    border: 2px solid var(--border);
+    transition: var(--transition);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.package-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 10px 40px rgba(30, 64, 175, 0.15);
+    transform: translateY(-5px);
+}
+
+.package-card.featured {
+    border-color: var(--primary);
+    box-shadow: 0 10px 40px rgba(30, 64, 175, 0.2);
+    transform: scale(1.02);
+}
+
+.package-card h3 {
+    font-size: 1.5rem;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+.price {
+    font-size: 1.8rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin: 1rem 0;
+}
+
+.price span {
+    font-size: 1rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.features-list {
+    list-style: none;
+    margin: 1.5rem 0;
+    flex-grow: 1;
+}
+
+.features-list li {
+    padding: 0.75rem 0;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.features-list li:last-child {
+    border-bottom: none;
+}
+
+.features-list i {
+    color: var(--success);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.badge {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.btn-block {
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.plan-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.btn-lg {
+    padding: 1rem 2rem !important;
+    font-size: 1.05rem !important;
+}
+
+.user-info-box {
+    background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+}
+
+.user-info-box h3 {
+    margin-bottom: 1.5rem;
+    color: var(--dark);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-item label {
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.info-item p {
+    font-size: 1rem;
+    color: var(--dark);
+    margin: 0;
+}
+
+.badge-active {
+    background: linear-gradient(135deg, var(--success) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    padding: 0.75rem 1.5rem;
+}
+
+.btn-outline:hover {
+    background: var(--primary);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .plan-selection-section {
+        padding: 2rem 0;
+    }
+
+    .plan-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .packages-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .package-card.featured {
+        transform: scale(1);
+    }
+
+    .plan-actions {
+        flex-direction: column;
+    }
+
+    .btn-lg {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends 'main/base.html' %}
+
+{% block title %}About Us - DataZen Analytics{% endblock %}
+
+{% block content %}
+<section class="about-section">
+    <div class="container">
+        <h1>About DataZen Analytics</h1>
+        <p class="intro-text">Transforming businesses through intelligent data solutions since 2019.</p>
+
+        <div class="about-hero">
+            <div class="about-content">
+                <h2>Who We Are</h2>
+                <p>
+                    DataZen Analytics is a premier data analytics and business intelligence firm committed to 
+                    empowering organizations with data-driven insights. Our team of experienced data scientists, 
+                    engineers, and consultants partner with businesses to transform complex data into strategic 
+                    competitive advantages.
+                </p>
+                <p>
+                    With over 5 years of proven excellence and 150+ successful implementations, we've helped 
+                    businesses across diverse industries optimize operations, increase revenue, and make smarter decisions.
+                </p>
+            </div>
+        </div>
+
+        <div class="about-mission-vision">
+            <div class="mission-box">
+                <h3>🎯 Our Mission</h3>
+                <p>
+                    To empower businesses worldwide by translating complex data into clear, actionable insights 
+                    that drive informed decision-making, accelerate growth, and unlock competitive advantage.
+                </p>
+            </div>
+            <div class="vision-box">
+                <h3>🚀 Our Vision</h3>
+                <p>
+                    To be the most trusted partner for data transformation, enabling organizations to thrive 
+                    in the digital economy through innovative analytics and strategic intelligence.
+                </p>
+            </div>
+        </div>
+
+        <div class="about-values">
+            <h2>Why Choose Us?</h2>
+            <div class="values-grid">
+                <div class="value-item">
+                    <div class="value-icon">📊</div>
+                    <h3>Expert Team</h3>
+                    <p>Experienced data scientists, engineers, and strategists with proven track records in Fortune 500 companies.</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">⚙️</div>
+                    <h3>Custom Solutions</h3>
+                    <p>Tailored analytics platforms designed specifically for your business challenges and goals.</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">🔬</div>
+                    <h3>Cutting-Edge Technology</h3>
+                    <p>Latest tools and frameworks including AI/ML, real-time analytics, and advanced data visualization.</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">✅</div>
+                    <h3>Proven Results</h3>
+                    <p>150+ completed projects with average ROI increase of 3x within first 12 months.</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">🛡️</div>
+                    <h3>Dedicated Support</h3>
+                    <p>24/7 monitoring, priority support team, and dedicated account managers for enterprise clients.</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">💰</div>
+                    <h3>Transparent Pricing</h3>
+                    <p>Flexible packages with no hidden fees, designed for businesses at any stage of growth.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-process">
+            <h2>Our Process</h2>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">01</div>
+                    <h3>Discover</h3>
+                    <p>We analyze your business, identifying data sources and opportunities for analytics.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">02</div>
+                    <h3>Design</h3>
+                    <p>We design custom analytics solutions aligned with your business objectives.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">03</div>
+                    <h3>Develop</h3>
+                    <p>Our team builds and deploys robust dashboards, models, and reporting systems.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">04</div>
+                    <h3>Deliver</h3>
+                    <p>We provide comprehensive training and ongoing support to maximize value.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="founder-section">
+            <h2>Meet Our Leadership Team</h2>
+            
+            <!-- Founder Section -->
+            <div class="founder-top">
+                <div class="founder-image">
+                    {% if about.about_image %}
+                        <img src="{{ about.about_image.url }}" alt="{{ about.founded_by }}" class="founder-photo" style="width: 280px; height: 280px; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 50px rgba(26, 115, 232, 0.25);">
+                    {% else %}
+                        <div class="founder-photo-placeholder">
+                            <span style="font-size: 4rem;">👨‍💼</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="founder-info">
+                    <h3>{{ about.founded_by|default:"Founder" }}</h3>
+                    <p class="founder-title">{{ about.founder_title|default:"Founder & CEO" }}</p>
+                </div> 
+            </div>
+            
+            <div class="founder-bottom">
+                {% if about.founder_bio %}
+                    {{ about.founder_bio }}
+                {% else %}
+                    <p class="founder-bio">
+                        Sandesh Gend is the visionary Founder & CEO of DataZen Analytics Pvt Ltd, a company dedicated to delivering 
+                        high-quality data analytics solutions. With a strong background in computer science and a passion for data-driven 
+                        technologies, Sandesh specializes in data analysis, dashboard creation, and business intelligence.
+                    </p>
+                    <p class="founder-bio">
+                        He founded DataZen Analytics with a clear mission: to simplify complex data and empower businesses to grow 
+                        through smart, actionable insights. His deep expertise spans Python, SQL, Excel, and industry-leading tools like 
+                        Power BI and Tableau.
+                    </p>
+                    <p class="founder-bio">
+                        Under Sandesh's strategic leadership, DataZen Analytics has grown to become a trusted partner for businesses 
+                        seeking to unlock the true potential of their data, delivering transformative analytics solutions across diverse 
+                        industries.
+                    </p>
+                {% endif %}
+            </div>
+            
+            <!-- Co-Founder Section (if exists) -->
+            {% if about.cofounder_name %}
+            <hr style="margin: 3rem 0; border: none; border-top: 2px solid #e2e8f0;">
+            
+            <div class="founder-top">
+                <div class="founder-image">
+                    {% if about.cofounder_image %}
+                        <img src="{{ about.cofounder_image.url }}" alt="{{ about.cofounder_name }}" class="founder-photo" style="width: 280px; height: 280px; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 50px rgba(0, 168, 204, 0.25);">
+                    {% else %}
+                        <div class="founder-photo-placeholder" style="background: linear-gradient(135deg, #00a8cc 0%, #0088bb 100%);">
+                            <span style="font-size: 4rem;">👩‍💼</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="founder-info">
+                    <h3>{{ about.cofounder_name }}</h3>
+                    <p class="founder-title">{{ about.cofounder_title|default:"Co-Founder" }}</p>
+                </div>
+            </div>
+            
+            <div class="founder-bottom">
+                {% if about.cofounder_bio %}
+                    {{ about.cofounder_bio }}
+                {% else %}
+                    <p class="founder-bio">
+                        Co-Founder at DataZen Analytics Pvt Ltd, bringing expertise and vision to drive the company's growth and innovation.
+                    </p>
+                {% endif %}
+            </div>
+            {% endif %}
+            
+        </div>
+
+        <div class="cta-box">
+            <h3>Let's Build Something Extraordinary Together</h3>
+            <p>Partner with DataZen Analytics to unlock the full potential of your data.</p>
+            <a href="{% url 'contact' %}" class="btn btn-primary" style="background: white !important; color: #1a73e8 !important;">Get Started Today</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

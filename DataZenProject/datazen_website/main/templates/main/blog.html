@@ -1,0 +1,264 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blog - DataZen Analytics{% endblock %}
+
+{% block content %}
+<section class="blog-section">
+    <div class="container">
+        <h1>DataZen Insights</h1>
+        <p class="intro-text">Expert articles, case studies, and industry trends to help you unlock the power of data.</p>
+
+        {% if posts %}
+            <div class="blog-list">
+                {% for post in posts %}
+                    <article class="blog-card">
+                        <div class="blog-badge">{% if post.is_published %}Published{% else %}Draft{% endif %}</div>
+                        <div class="blog-header">
+                            <h2><a href="{% url 'blog_detail' post.id %}">{{ post.title }}</a></h2>
+                            <p class="blog-meta">
+                                <span class="author">By {{ post.author }}</span> • 
+                                <span class="date">{{ post.created_at|date:"M d, Y" }}</span> • 
+                                <span class="read-time">5 min read</span>
+                            </p>
+                        </div>
+                        <p class="blog-excerpt">{{ post.content|truncatewords:50 }}</p>
+                        <div class="blog-footer">
+                            <a href="{% url 'blog_detail' post.id %}" class="read-more">Read Full Article →</a>
+                            <div class="blog-tags">
+                                <span class="tag">Analytics</span>
+                                <span class="tag">Data Intelligence</span>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>📚 Coming Soon: Expert insights on data analytics, industry trends, and best practices</p>
+                <p style="margin-top: 1rem; color: #666;">Check back regularly for deep-dive articles and analysis from our expert team.</p>
+            </div>
+        {% endif %}
+
+        <!-- Newsletter Section for Regular Users -->
+        {% if not user.is_staff %}
+        <div class="blog-newsletter">
+            <h3>📬 Subscribe to Our Newsletter</h3>
+            <p>Get the latest analytics insights, tips, and industry news delivered to your inbox.</p>
+            
+            <div id="newsletter-messages" style="margin-bottom: 1rem;"></div>
+            
+            <form id="newsletter-form" class="newsletter-form" style="display: flex; gap: 0.5rem; align-items: center;">
+                {% csrf_token %}
+                <input 
+                    type="email" 
+                    name="email"
+                    id="newsletter-email"
+                    placeholder="Enter your email address"
+                    {% if user.is_authenticated %}value="{{ user.email }}" data-user-email="{{ user.email }}"{% endif %}
+                    style="
+                        flex: 1;
+                        padding: 0.75rem 1rem;
+                        border: 1px solid #ddd;
+                        border-radius: 4px;
+                        font-size: 1rem;
+                        font-family: inherit;
+                    "
+                    required
+                >
+                <button type="submit" id="newsletter-btn" class="btn btn-primary" style="
+                    padding: 0.75rem 1.5rem;
+                    white-space: nowrap;
+                ">Subscribe</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Admin Subscriber Management Section -->
+        {% if is_admin %}
+        <div class="blog-newsletter" style="background: #f4c7c7; padding: 2rem; margin-top: 2rem; border-radius: 8px;">
+            <h3 style="color: #070707;">📊 Newsletter Subscriber Management</h3>
+            {% if subscribers %}
+            <p style="color: #070707; margin-bottom: 1.5rem;">Total Subscribers: <strong>{{ subscribers|length }}</strong></p>
+            
+            <div style="
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                max-height: 400px;
+                overflow-y: auto;
+            ">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead style="background: #f0f0f0; position: sticky; top: 0;">
+                        <tr>
+                            <th style="padding: 0.75rem; color: #070707; text-align: left; border-bottom: 2px solid #ddd;">Email</th>
+                            <th style="padding: 0.75rem; color: #070707; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
+                            <th style="padding: 0.75rem; color: #070707; text-align: left; border-bottom: 2px solid #ddd;">Status</th>
+                            <th style="padding: 0.75rem; color: #070707; text-align: left; border-bottom: 2px solid #ddd;">Subscribed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subscriber in subscribers %}
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 0.75rem;"><code style="background: #f8e9e9; padding: 0.25rem 0.5rem; color: #070707; border-radius: 3px;">{{ subscriber.email }}</code></td>
+                            <td style="padding: 0.75rem; color: #070707;">{{ subscriber.name|default:"—" }}</td>
+                            <td style="padding: 0.75rem;">
+                                {% if subscriber.is_active %}
+                                <span style="color: green; font-weight: bold;">✅ Active</span>
+                                {% else %}
+                                <span style="color: red; font-weight: bold;">❌ Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 0.75rem; color: #070707; font-size: 0.9rem;">{{ subscriber.subscribed_date|date:"M d, Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" style="padding: 1rem; text-align: center; color: #999;">No active subscribers yet</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p style="color: #666; padding: 1.5rem; text-align: center;">No subscribers yet. Users can subscribe using the newsletter form.</p>
+            {% endif %}
+
+            <div style="margin-top: 1.5rem;">
+                <p style="color: #666; margin-bottom: 0.5rem;">
+                    ✨ For detailed subscriber management, visit the <a href="{% url 'admin:main_newsletter_changelist' %}" style="color: #0051ba; text-decoration: none; font-weight: bold;">Admin Panel →</a>
+                </p>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+<script>
+// Newsletter form submission (only loads if form exists)
+const form = document.getElementById('newsletter-form');
+if (form) {
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('newsletter-email').value;
+        const button = document.getElementById('newsletter-btn');
+        const messagesDiv = document.getElementById('newsletter-messages');
+        const originalButtonText = button.textContent;
+        
+        // Show loading state
+        button.textContent = 'Subscribing...';
+        button.disabled = true;
+        
+        try {
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('name', email.split('@')[0]);
+            
+            const response = await fetch('{% url "subscribe_newsletter" %}', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: formData
+            });
+            
+            // Parse response as JSON
+            const contentType = response.headers.get('content-type');
+            let data;
+            
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                throw new Error('Server did not return JSON');
+            }
+            
+            // Clear messages
+            messagesDiv.innerHTML = '';
+            
+            // Display response message
+            const messageDiv = document.createElement('div');
+            const isSuccess = data.success;
+            
+            messageDiv.style.cssText = `
+                background: ${isSuccess ? '#ecfdf5' : '#fee2e2'};
+                border-left: 4px solid ${isSuccess ? '#059669' : '#dc2626'};
+                padding: 0.75rem 1rem;
+                border-radius: 4px;
+                color: ${isSuccess ? '#065f46' : '#991b1b'};
+                font-size: 0.9rem;
+                animation: slideIn 0.3s ease-out;
+            `;
+            messageDiv.textContent = data.message;
+            messagesDiv.appendChild(messageDiv);
+            
+            // Clear form if success
+            if (isSuccess) {
+                // Restore email field if user is authenticated, otherwise clear it
+                const emailInput = document.getElementById('newsletter-email');
+                const userEmail = emailInput.getAttribute('data-user-email');
+                if (userEmail) {
+                    emailInput.value = userEmail;
+                } else {
+                    emailInput.value = '';
+                }
+                
+                // Auto-remove success message after 5 seconds
+                setTimeout(() => {
+                    messageDiv.style.animation = 'slideOut 0.3s ease-out';
+                    setTimeout(() => messagesDiv.innerHTML = '', 300);
+                }, 5000);
+            }
+            
+        } catch (error) {
+            console.error('Error:', error);
+            messagesDiv.innerHTML = `
+                <div style="
+                    background: #fee2e2;
+                    border-left: 4px solid #dc2626;
+                    padding: 0.75rem 1rem;
+                    border-radius: 4px;
+                    color: #991b1b;
+                    font-size: 0.9rem;
+                ">❌ An error occurred. Please try again.</div>
+            `;
+        } finally {
+            // Restore button
+            button.textContent = originalButtonText;
+            button.disabled = false;
+        }
+    });
+}
+
+// Add CSS animations if not already present
+if (!document.querySelector('#newsletter-animations')) {
+    const style = document.createElement('style');
+    style.id = 'newsletter-animations';
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Portfolio - DataZen Analytics{% endblock %}
+
+{% block content %}
+<section class="portfolio-section">
+    <div class="container">
+        <h1>Our Success Stories</h1>
+        <p class="intro-text">See how we've helped businesses transform their data into actionable insights and achieve remarkable results.</p>
+
+        {% if projects %}
+            <div class="projects-grid">
+                {% for project in projects %}
+                    <div class="project-card">
+                        {% if project.image %}
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
+                        {% else %}
+                            <div class="project-image-placeholder">📊 {{ project.title|truncatewords:3 }}</div>
+                        {% endif %}
+                        <div class="project-content">
+                            <h3>{{ project.title }}</h3>
+                            <p>{{ project.description|truncatewords:20 }}</p>
+                            <div class="project-tools">
+                                <strong style="color: #666; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">Tech Stack:</strong>
+                                <p style="color: #00bcd4; font-weight: 600; font-size: 0.9rem;">{{ project.tools_used }}</p>
+                            </div>
+                            <p style="color: #00bcd4; font-weight: 600; margin-top: 1rem; font-size: 0.95rem;">✓ Project Completed Successfully</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>Explore our recent analytics projects and client success stories below. Each project showcases our expertise in data-driven solutions.</p>
+                <div style="margin-top: 2rem;">
+                    <div class="project-card sample">
+                        <div class="project-image-placeholder">📈 Retail Analytics</div>
+                        <div class="project-content">
+                            <h3>E-Commerce Analytics Platform</h3>
+                            <p>Built comprehensive analytics dashboard for major e-commerce retailer, resulting in 35% improvement in conversion rates and $2.5M revenue increase.</p>
+                            <div class="project-tools">
+                                <strong style="color: #666; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">Tech Stack:</strong>
+                                <p style="color: #00bcd4; font-weight: 600; font-size: 0.9rem;">Python, Tableau, SQL</p>
+                            </div>
+                            <p style="color: #00bcd4; font-weight: 600; margin-top: 1rem; font-size: 0.95rem;">✓ Project Completed Successfully</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="portfolio-stats">
+            <h2>Our Impact</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>150+</h3>
+                    <p>Projects Completed</p>
+                </div>
+                <div class="stat-item">
+                    <h3>98%</h3>
+                    <p>Client Satisfaction</p>
+                </div>
+                <div class="stat-item">
+                    <h3>$500M+</h3>
+                    <p>Client Revenue Impact</p>
+                </div>
+                <div class="stat-item">
+                    <h3>5+ Years</h3>
+                    <p>Industry Experience</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-box">
+            <h3>Ready to Transform Your Data?</h3>
+            <p>Let's discuss how we can help your business grow with intelligent analytics solutions.</p>
+            <a href="{% url 'contact' %}" class="btn btn-primary" style="background: white !important; color: #1a73e8 !important;">Start Your Project Today</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

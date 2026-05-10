@@ -1,0 +1,325 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Sign Up - DataZen Analytics{% endblock %}
+
+{% block content %}
+<section class="login-section">
+    <div class="container">
+        <div class="login-container">
+            <!-- Signup Panel -->
+            <div class="login-panel signup-panel">
+                <div class="login-header">
+                    <h1>Create Account</h1>
+                    <p>Join DataZen Analytics today</p>
+                </div>
+
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="POST" class="login-form" action="{% url 'signup' %}">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            placeholder="Choose a username" 
+                            minlength="3"
+                            required
+                        >
+                        <small class="form-hint">At least 3 characters</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="your@email.com" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="Enter password" 
+                            minlength="6"
+                            required
+                        >
+                        <small class="form-hint">At least 6 characters</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password_confirm">Confirm Password</label>
+                        <input 
+                            type="password" 
+                            id="password_confirm" 
+                            name="password_confirm" 
+                            placeholder="Confirm password" 
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                </form>
+
+                <div class="login-footer">
+                    <p>Already have an account? <a href="{% url 'user_login' %}" class="link">Log in here</a></p>
+                </div>
+            </div>
+
+            <!-- Benefits Section -->
+            <div class="login-divider">
+                <span>Why join us?</span>
+            </div>
+
+            <div class="benefits-box">
+                <h3>Start Your Free Trial</h3>
+                <ul class="benefits-list">
+                    <li><i class="fas fa-check-circle"></i> Access all premium plans</li>
+                    <li><i class="fas fa-check-circle"></i> Professional dashboards</li>
+                    <li><i class="fas fa-check-circle"></i> Real-time analytics</li>
+                    <li><i class="fas fa-check-circle"></i> 24/7 customer support</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.signup-panel {
+    border-left: 4px solid var(--success);
+}
+
+.benefits-box {
+    background: linear-gradient(135deg,  #d8efe8 0%, #14efab 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(5, 150, 105, 0.2);
+}
+
+.benefits-box h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.benefits-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.benefits-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.benefits-list i {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.form-hint {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    display: block;
+    margin-top: 0.25rem;
+}
+
+.login-section {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.05) 0%, rgba(30, 64, 175, 0.05) 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.login-container {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.login-panel {
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(30, 64, 175, 0.1);
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-header h1 {
+    font-size: 1.8rem;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+.login-header p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--dark);
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: var(--transition-fast);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--success);
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.btn-block {
+    width: 100% !important;
+    padding: 0.75rem !important;
+    font-weight: 600;
+}
+
+.login-footer {
+    text-align: center;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+}
+
+.login-footer p {
+    font-size: 0.85rem;
+    margin: 0.5rem 0;
+}
+
+.link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition-fast);
+}
+
+.link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.login-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.login-divider::before,
+.login-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.alert {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.alert-success {
+    background-color: rgba(5, 150, 105, 0.1);
+    color: var(--success);
+    border: 1px solid var(--success);
+}
+
+.alert-error {
+    background-color: rgba(220, 38, 38, 0.1);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+}
+
+@media (max-width: 640px) {
+    .login-section {
+        padding: 2rem 0;
+    }
+
+    .login-panel {
+        padding: 1.5rem;
+    }
+
+    .login-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .login-container {
+        gap: 1.5rem;
+    }
+
+    .benefits-list {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
